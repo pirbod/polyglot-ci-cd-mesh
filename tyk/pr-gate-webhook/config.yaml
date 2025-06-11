@@ -1,0 +1,5 @@
+port: 8080
+tyk:
+  gateway_url: https://tyk.example.com
+  api_key:    YOUR_TYK_API_KEY
+policies_path: ./policies

@@ -1,0 +1,59 @@
+name: Polyglot CI/CD
+
+on:
+  pull_request:
+    paths:
+      - 'charts/sample-app/**'
+      - 'src/**'
+      - '.github/**'
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        language: [java, dotnet, node, python]
+    env:
+      REGISTRY_AWS: ${{ secrets.AWS_ECR_URI }}
+      REGISTRY_AZ:  ${{ secrets.AZURE_ACR_URI }}
+      REGISTRY_GCP: ${{ secrets.GCP_GCR_URI }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up ${{ matrix.language }}
+        run: |
+          case "${{ matrix.language }}" in
+            java)    sdk install java ;;
+            dotnet)  sudo snap install dotnet-sdk --classic ;;
+            node)    curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash - && sudo apt-get install -y nodejs ;;
+            python)  python3 -m pip install --upgrade pip ;;
+          esac
+
+      - name: Build & Test
+        run: |
+          case "${{ matrix.language }}" in
+            java)    mvn clean verify ;;
+            dotnet)  dotnet test ;;
+            node)    npm install && npm test ;;
+            python)  pytest ;;
+          esac
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build & Push Multi-Arch Image
+        run: |
+          docker buildx build \
+            --platform linux/amd64,linux/arm64 \
+            -t $REGISTRY_AWS/myapp:${{ github.sha }} \
+            -t $REGISTRY_AZ/myapp:${{ github.sha }} \
+            -t $REGISTRY_GCP/myapp:${{ github.sha }} \
+            --push .
+
+      - name: Tyk PR-Gate Security Scan
+        uses: actions/http-client@v1
+        with:
+          url:    ${{ secrets.TYK_WEBHOOK_URL }}
+          method: POST
+          headers: '{ "Content-Type": "application/json" }'
+          body:   '{"repo":"${{ github.repository }}","pr":${{ github.event.number }}}'
