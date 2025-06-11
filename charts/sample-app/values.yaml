@@ -1,0 +1,4 @@
+image:
+  repository: your.registry/myapp
+  tag: latest
+replicaCount: 2

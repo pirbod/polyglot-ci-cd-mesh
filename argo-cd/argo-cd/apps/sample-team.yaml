@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sample-app
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/your-org/polyglot-ci-cd-mesh.git
+    path: charts/sample-app
+    targetRevision: main
+    helm:
+      values: |
+        image:
+          repository: "{{REGISTRY_AWS}}/myapp"
+          tag:     "{{IMAGE_TAG}}"
+  destination:
+    server: https://<team-cluster-endpoint>
+    namespace: sample-app
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

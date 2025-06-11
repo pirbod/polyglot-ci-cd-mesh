@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: polyglot-root
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/your-org/polyglot-ci-cd-mesh.git
+    path: argo-cd/apps
+    targetRevision: main
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
