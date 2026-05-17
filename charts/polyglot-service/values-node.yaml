@@ -1,0 +1,8 @@
+serviceName: node-service
+runtime: node
+image:
+  repository: local/node-service
+  tag: latest
+service:
+  port: 8083
+  targetPort: 8083

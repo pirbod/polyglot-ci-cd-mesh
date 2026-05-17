@@ -1,0 +1,11 @@
+{
+  "status": "ready",
+  "mode": "local validation",
+  "modules": [
+    "cluster-aks",
+    "cluster-eks",
+    "cluster-gke",
+    "registry",
+    "observability"
+  ]
+}

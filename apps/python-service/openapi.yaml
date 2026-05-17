@@ -1,0 +1,39 @@
+openapi: 3.0.3
+info:
+  title: Python Service API
+  version: 1.0.0
+x-service-metadata:
+  owner: platform-team
+  runtime: python
+  criticality: medium
+x-tyk-policy-id: mesh-service-standard
+x-tyk-rate-limit:
+  rate: 60
+  per: minute
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+security:
+  - bearerAuth: []
+paths:
+  /health:
+    get:
+      operationId: getPythonHealth
+      tags:
+        - health
+      x-public: true
+      responses:
+        "200":
+          description: Service health
+  /version:
+    get:
+      operationId: getPythonVersion
+      tags:
+        - version
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Service version

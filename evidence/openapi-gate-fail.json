@@ -1,0 +1,123 @@
+{
+  "status": "fail",
+  "risk_score": 100,
+  "findings": [
+    {
+      "code": "missing_auth_scheme",
+      "severity": "critical",
+      "message": "No supported auth scheme is defined.",
+      "remediation": "Add components.securitySchemes with apiKey, http, oauth2, or openIdConnect.",
+      "location": "$.components.securitySchemes"
+    },
+    {
+      "code": "missing_rate_limit",
+      "severity": "high",
+      "message": "No gateway rate-limit extension is defined.",
+      "remediation": "Add x-tyk-rate-limit or x-rate-limit with burst and sustained limits.",
+      "location": "$"
+    },
+    {
+      "code": "missing_tyk_policy_mapping",
+      "severity": "high",
+      "message": "No Tyk policy mapping is defined.",
+      "remediation": "Add x-tyk-policy-id or x-tyk-policy to bind the API to a managed gateway policy.",
+      "location": "$"
+    },
+    {
+      "code": "missing_service_owner",
+      "severity": "medium",
+      "message": "Service metadata is missing owner.",
+      "remediation": "Add x-service-metadata with owner, runtime, and criticality.",
+      "location": "$.x-service-metadata"
+    },
+    {
+      "code": "missing_service_runtime",
+      "severity": "medium",
+      "message": "Service metadata is missing runtime.",
+      "remediation": "Add x-service-metadata with owner, runtime, and criticality.",
+      "location": "$.x-service-metadata"
+    },
+    {
+      "code": "missing_service_criticality",
+      "severity": "medium",
+      "message": "Service metadata is missing criticality.",
+      "remediation": "Add x-service-metadata with owner, runtime, and criticality.",
+      "location": "$.x-service-metadata"
+    },
+    {
+      "code": "public_admin_endpoint",
+      "severity": "critical",
+      "message": "GET /admin/* exposes an admin-like path without auth.",
+      "remediation": "Require auth for admin paths and avoid public wildcard admin endpoints.",
+      "location": "$.paths./admin/*.get"
+    },
+    {
+      "code": "wildcard_public_path",
+      "severity": "critical",
+      "message": "GET /admin/* marks a wildcard path public.",
+      "remediation": "Replace wildcard public paths with explicit, authenticated operations.",
+      "location": "$.paths./admin/*.get"
+    },
+    {
+      "code": "missing_operation_id",
+      "severity": "medium",
+      "message": "GET /admin/* is missing operationId.",
+      "remediation": "Add a stable operationId for traceability, gateway policy, and audit evidence.",
+      "location": "$.paths./admin/*.get"
+    },
+    {
+      "code": "missing_tags",
+      "severity": "low",
+      "message": "GET /admin/* is missing tags.",
+      "remediation": "Add at least one tag for ownership and catalog grouping.",
+      "location": "$.paths./admin/*.get"
+    },
+    {
+      "code": "operation_missing_security",
+      "severity": "critical",
+      "message": "POST /orders does not require auth.",
+      "remediation": "Add an operation security requirement or explicitly mark a safe public endpoint.",
+      "location": "$.paths./orders.post"
+    },
+    {
+      "code": "missing_operation_id",
+      "severity": "medium",
+      "message": "POST /orders is missing operationId.",
+      "remediation": "Add a stable operationId for traceability, gateway policy, and audit evidence.",
+      "location": "$.paths./orders.post"
+    },
+    {
+      "code": "missing_tags",
+      "severity": "low",
+      "message": "POST /orders is missing tags.",
+      "remediation": "Add at least one tag for ownership and catalog grouping.",
+      "location": "$.paths./orders.post"
+    }
+  ],
+  "remediation": [
+    "Add components.securitySchemes with apiKey, http, oauth2, or openIdConnect.",
+    "Add x-tyk-rate-limit or x-rate-limit with burst and sustained limits.",
+    "Add x-tyk-policy-id or x-tyk-policy to bind the API to a managed gateway policy.",
+    "Add x-service-metadata with owner, runtime, and criticality.",
+    "Add x-service-metadata with owner, runtime, and criticality.",
+    "Add x-service-metadata with owner, runtime, and criticality.",
+    "Require auth for admin paths and avoid public wildcard admin endpoints.",
+    "Replace wildcard public paths with explicit, authenticated operations.",
+    "Add a stable operationId for traceability, gateway policy, and audit evidence.",
+    "Add at least one tag for ownership and catalog grouping.",
+    "Add an operation security requirement or explicitly mark a safe public endpoint.",
+    "Add a stable operationId for traceability, gateway policy, and audit evidence.",
+    "Add at least one tag for ownership and catalog grouping."
+  ],
+  "policy_evidence": {
+    "parseable": true,
+    "openapi": "3.0.3",
+    "title": "Uncontrolled Admin API",
+    "version": "0.1.0",
+    "operation_count": 2,
+    "public_operations": 1,
+    "auth_scheme_present": false,
+    "rate_limit_present": false,
+    "tyk_policy_present": false
+  }
+}

@@ -1,5 +1,24 @@
-variable "prefix"         { type = string }
-variable "aws_region"     { type = string }
-variable "azure_location" { type = string }
-variable "gcp_region"     { type = string }
-variable "gcp_project"    { type = string }
+variable "prefix" {
+  description = "Resource prefix."
+  type        = string
+}
+
+variable "environment" {
+  description = "Environment name."
+  type        = string
+}
+
+variable "region" {
+  description = "GCP region."
+  type        = string
+}
+
+variable "kubernetes_version" {
+  description = "Kubernetes version."
+  type        = string
+}
+
+variable "allowed_cidrs" {
+  description = "Allowed control-plane CIDRs."
+  type        = list(string)
+}

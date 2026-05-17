@@ -1,0 +1,6 @@
+apiVersion: v2
+name: polyglot-service
+description: Helm chart for a service in the polyglot CI/CD mesh
+type: application
+version: 1.0.0
+appVersion: "1.0.0"

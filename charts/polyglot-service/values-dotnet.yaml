@@ -1,0 +1,8 @@
+serviceName: dotnet-service
+runtime: dotnet
+image:
+  repository: local/dotnet-service
+  tag: latest
+service:
+  port: 8082
+  targetPort: 8082

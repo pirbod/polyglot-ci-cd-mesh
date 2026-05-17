@@ -1,0 +1,7 @@
+{
+  "oidc": "documented",
+  "least_privilege": "workflow permissions are scoped",
+  "api_gate": "pass",
+  "attestation": "simulated locally, real path documented for release workflow",
+  "image_signing": "simulated locally, real path documented for release workflow"
+}

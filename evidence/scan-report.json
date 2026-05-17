@@ -1,0 +1,8 @@
+{
+  "status": "warn",
+  "critical": 0,
+  "high": 1,
+  "medium": 5,
+  "failing_service": "node-service",
+  "remediation": "Upgrade demo-transitive-package to the patched version."
+}

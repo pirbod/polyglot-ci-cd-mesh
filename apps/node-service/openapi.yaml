@@ -1,0 +1,39 @@
+openapi: 3.0.3
+info:
+  title: Node Service API
+  version: 1.0.0
+x-service-metadata:
+  owner: platform-team
+  runtime: node
+  criticality: medium
+x-tyk-policy-id: mesh-service-standard
+x-tyk-rate-limit:
+  rate: 60
+  per: minute
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+security:
+  - bearerAuth: []
+paths:
+  /health:
+    get:
+      operationId: getNodeHealth
+      tags:
+        - health
+      x-public: true
+      responses:
+        "200":
+          description: Service health
+  /version:
+    get:
+      operationId: getNodeVersion
+      tags:
+        - version
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Service version

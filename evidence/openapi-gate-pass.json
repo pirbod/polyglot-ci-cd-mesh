@@ -1,0 +1,17 @@
+{
+  "status": "pass",
+  "risk_score": 0,
+  "findings": [],
+  "remediation": [],
+  "policy_evidence": {
+    "parseable": true,
+    "openapi": "3.0.3",
+    "title": "Payments Mesh API",
+    "version": "1.0.0",
+    "operation_count": 3,
+    "public_operations": 1,
+    "auth_scheme_present": true,
+    "rate_limit_present": true,
+    "tyk_policy_present": true
+  }
+}

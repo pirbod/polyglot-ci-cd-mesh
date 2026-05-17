@@ -1,0 +1,26 @@
+{
+  "status": "generated",
+  "format": "CycloneDX-compatible demo summary",
+  "components": [
+    {
+      "name": "java-service",
+      "runtime": "java",
+      "risk": "low"
+    },
+    {
+      "name": "dotnet-service",
+      "runtime": "dotnet",
+      "risk": "low"
+    },
+    {
+      "name": "node-service",
+      "runtime": "node",
+      "risk": "medium"
+    },
+    {
+      "name": "python-service",
+      "runtime": "python",
+      "risk": "low"
+    }
+  ]
+}

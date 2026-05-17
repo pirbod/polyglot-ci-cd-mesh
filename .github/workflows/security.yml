@@ -1,0 +1,76 @@
+name: Security
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  security-events: write
+  id-token: write
+  attestations: write
+
+jobs:
+  security-gates:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install local policy tooling
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+
+      - name: OpenAPI policy gate
+        run: |
+          python scripts/validate_openapi.py security-gates/openapi-rules/compliant-api.yaml evidence/openapi-gate-pass.json
+          if python scripts/validate_openapi.py security-gates/openapi-rules/non-compliant-api.yaml evidence/openapi-gate-fail.json; then exit 1; fi
+
+      - name: Generate local evidence
+        run: python scripts/generate_demo_data.py
+
+      - name: Dependency review
+        if: github.event_name == 'pull_request'
+        uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: critical
+
+      - name: OSV scan
+        uses: google/osv-scanner-action/osv-scanner-action@v2.0.1
+        with:
+          scan-args: -r .
+
+      - name: Trivy filesystem scan
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          severity: CRITICAL,HIGH
+          exit-code: "1"
+
+      - name: SBOM
+        uses: anchore/sbom-action@v0
+        with:
+          path: .
+          output-file: evidence/sbom.spdx.json
+
+      - name: Upload security evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-evidence
+          path: evidence/
+
+  oidc-readiness:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - run: echo "Configure cloud-specific OIDC roles before enabling real deploy jobs."

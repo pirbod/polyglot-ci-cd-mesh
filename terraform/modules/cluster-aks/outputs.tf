@@ -1,3 +1,14 @@
-output "aks_cluster_name" { value = module.aks.cluster_name }
-output "eks_cluster_name" { value = module.eks.cluster_name }
-output "gke_cluster_name" { value = module.gke.cluster_name }
+output "cluster_name" {
+  description = "AKS cluster name."
+  value       = local.cluster_name
+}
+
+output "target" {
+  description = "AKS target metadata."
+  value = {
+    cloud              = "azure"
+    location           = var.location
+    kubernetes_version = var.kubernetes_version
+    allowed_cidrs      = var.allowed_cidrs
+  }
+}

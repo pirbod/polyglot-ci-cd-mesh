@@ -1,0 +1,259 @@
+{
+  "generated_at": "2026-05-17T01:26:36+00:00",
+  "overview": {
+    "mesh_health_score": 92,
+    "build_success_rate": 97,
+    "deployment_readiness": 88,
+    "security_gate_status": "passing",
+    "supply_chain_risk_score": 24
+  },
+  "pipelines": [
+    {
+      "id": "java",
+      "service": "Java service",
+      "runtime": "Java",
+      "build": "pass",
+      "tests": "pass",
+      "scan": "pass",
+      "image": "built",
+      "sbom": "generated",
+      "attestation": "ready",
+      "deploy_readiness": "ready",
+      "risk_score": 12,
+      "last_run": "2026-05-17T01:26:36+00:00"
+    },
+    {
+      "id": "dotnet",
+      "service": ".NET service",
+      "runtime": ".NET",
+      "build": "pass",
+      "tests": "pass",
+      "scan": "pass",
+      "image": "built",
+      "sbom": "generated",
+      "attestation": "ready",
+      "deploy_readiness": "ready",
+      "risk_score": 18,
+      "last_run": "2026-05-17T01:26:36+00:00"
+    },
+    {
+      "id": "node",
+      "service": "Node.js service",
+      "runtime": "Node.js",
+      "build": "pass",
+      "tests": "pass",
+      "scan": "warn",
+      "image": "built",
+      "sbom": "generated",
+      "attestation": "ready",
+      "deploy_readiness": "blocked",
+      "risk_score": 42,
+      "last_run": "2026-05-17T01:26:36+00:00"
+    },
+    {
+      "id": "python",
+      "service": "Python service",
+      "runtime": "Python",
+      "build": "pass",
+      "tests": "pass",
+      "scan": "pass",
+      "image": "built",
+      "sbom": "generated",
+      "attestation": "ready",
+      "deploy_readiness": "ready",
+      "risk_score": 8,
+      "last_run": "2026-05-17T01:26:36+00:00"
+    }
+  ],
+  "pipeline_runs": [
+    {
+      "id": "run-1001",
+      "service": "Python service",
+      "status": "pass",
+      "duration_seconds": 41,
+      "created_at": "2026-05-17T01:26:36+00:00"
+    },
+    {
+      "id": "run-1000",
+      "service": "Node.js service",
+      "status": "warn",
+      "duration_seconds": 56,
+      "created_at": "2026-05-17T01:26:36+00:00"
+    }
+  ],
+  "clouds": [
+    {
+      "id": "aks",
+      "name": "AKS",
+      "cluster": "mesh-aks-dev",
+      "region": "westeurope",
+      "terraform_plan": "validated",
+      "registry": "available",
+      "argocd_sync": "synced",
+      "health": "healthy",
+      "environment": "dev"
+    },
+    {
+      "id": "eks",
+      "name": "EKS",
+      "cluster": "mesh-eks-dev",
+      "region": "eu-central-1",
+      "terraform_plan": "validated",
+      "registry": "available",
+      "argocd_sync": "synced",
+      "health": "healthy",
+      "environment": "dev"
+    },
+    {
+      "id": "gke",
+      "name": "GKE",
+      "cluster": "mesh-gke-dev",
+      "region": "europe-west3",
+      "terraform_plan": "validated",
+      "registry": "available",
+      "argocd_sync": "synced",
+      "health": "healthy",
+      "environment": "dev"
+    }
+  ],
+  "api_gate": {
+    "selected": "compliant-api.yaml",
+    "last_result": {
+      "status": "pass",
+      "risk_score": 0,
+      "findings": [],
+      "remediation": [],
+      "policy_evidence": {
+        "parseable": true,
+        "openapi": "3.0.3",
+        "title": "Payments Mesh API",
+        "version": "1.0.0",
+        "operation_count": 3,
+        "public_operations": 1,
+        "auth_scheme_present": true,
+        "rate_limit_present": true,
+        "tyk_policy_present": true
+      }
+    }
+  },
+  "supply_chain": {
+    "sbom": "generated",
+    "container_scan": "0 critical, 1 high, 5 medium",
+    "dependency_scan": "node-service has one simulated high-risk dependency",
+    "attestation": "generated",
+    "signed_images": "simulated signatures present",
+    "failing_service": "Node.js service",
+    "remediation": "Upgrade demo-transitive-package from 1.2.0 to 1.2.3 and rerun the scan.",
+    "final_pass_state": "Python service and Java service are clean in the demo evidence set."
+  },
+  "gitops": [
+    {
+      "id": "java-aks",
+      "service": "Java service",
+      "cluster": "AKS",
+      "sync": "Synced",
+      "health": "Healthy",
+      "revision": "a1f8421",
+      "wave": 10
+    },
+    {
+      "id": "java-eks",
+      "service": "Java service",
+      "cluster": "EKS",
+      "sync": "Synced",
+      "health": "Healthy",
+      "revision": "a1f8421",
+      "wave": 10
+    },
+    {
+      "id": "java-gke",
+      "service": "Java service",
+      "cluster": "GKE",
+      "sync": "Synced",
+      "health": "Healthy",
+      "revision": "a1f8421",
+      "wave": 10
+    },
+    {
+      "id": "dotnet-aks",
+      "service": ".NET service",
+      "cluster": "AKS",
+      "sync": "Synced",
+      "health": "Healthy",
+      "revision": "c72b901",
+      "wave": 10
+    },
+    {
+      "id": "dotnet-eks",
+      "service": ".NET service",
+      "cluster": "EKS",
+      "sync": "Synced",
+      "health": "Healthy",
+      "revision": "c72b901",
+      "wave": 10
+    },
+    {
+      "id": "dotnet-gke",
+      "service": ".NET service",
+      "cluster": "GKE",
+      "sync": "Synced",
+      "health": "Healthy",
+      "revision": "c72b901",
+      "wave": 10
+    },
+    {
+      "id": "node-aks",
+      "service": "Node.js service",
+      "cluster": "AKS",
+      "sync": "Synced",
+      "health": "Healthy",
+      "revision": "f8d9120",
+      "wave": 20
+    },
+    {
+      "id": "node-eks",
+      "service": "Node.js service",
+      "cluster": "EKS",
+      "sync": "OutOfSync",
+      "health": "Progressing",
+      "revision": "f8d9120",
+      "wave": 20
+    },
+    {
+      "id": "node-gke",
+      "service": "Node.js service",
+      "cluster": "GKE",
+      "sync": "Synced",
+      "health": "Healthy",
+      "revision": "f8d9120",
+      "wave": 20
+    },
+    {
+      "id": "python-aks",
+      "service": "Python service",
+      "cluster": "AKS",
+      "sync": "Synced",
+      "health": "Healthy",
+      "revision": "b51e7c3",
+      "wave": 20
+    },
+    {
+      "id": "python-eks",
+      "service": "Python service",
+      "cluster": "EKS",
+      "sync": "Synced",
+      "health": "Healthy",
+      "revision": "b51e7c3",
+      "wave": 20
+    },
+    {
+      "id": "python-gke",
+      "service": "Python service",
+      "cluster": "GKE",
+      "sync": "Synced",
+      "health": "Healthy",
+      "revision": "b51e7c3",
+      "wave": 20
+    }
+  ]
+}

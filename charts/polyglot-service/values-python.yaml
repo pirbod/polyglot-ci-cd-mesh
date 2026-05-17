@@ -1,0 +1,8 @@
+serviceName: python-service
+runtime: python
+image:
+  repository: local/python-service
+  tag: latest
+service:
+  port: 8084
+  targetPort: 8084

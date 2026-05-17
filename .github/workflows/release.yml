@@ -1,0 +1,56 @@
+name: Release
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: read
+  packages: write
+  id-token: write
+  attestations: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - image: java-service
+            path: apps/java-service
+          - image: dotnet-service
+            path: apps/dotnet-service
+          - image: node-service
+            path: apps/node-service
+          - image: python-service
+            path: apps/python-service
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image
+        run: docker build -t ghcr.io/${{ github.repository }}/${{ matrix.image }}:${{ github.ref_name }} ${{ matrix.path }}
+
+      - name: Generate SBOM
+        uses: anchore/sbom-action@v0
+        with:
+          image: ghcr.io/${{ github.repository }}/${{ matrix.image }}:${{ github.ref_name }}
+          output-file: evidence/${{ matrix.image }}-sbom.spdx.json
+
+      - name: Simulate image signing evidence
+        run: |
+          mkdir -p evidence
+          printf '{"image":"%s","tag":"%s","signature_mode":"local-simulation","oidc_ready":true}\n' "${{ matrix.image }}" "${{ github.ref_name }}" > evidence/${{ matrix.image }}-signature.json
+
+      - name: Write release bundle index
+        run: |
+          mkdir -p evidence
+          printf '{"image":"%s","release":"%s","sbom":true,"attestation_ready":true}\n' "${{ matrix.image }}" "${{ github.ref_name }}" > evidence/${{ matrix.image }}-release-index.json
+
+      - name: Upload release evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.image }}-release-evidence
+          path: evidence/

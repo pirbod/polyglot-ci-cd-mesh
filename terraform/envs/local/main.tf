@@ -1,0 +1,15 @@
+module "mesh" {
+  source             = "../.."
+  prefix             = "polyglot"
+  environment        = "local"
+  aws_region         = "eu-central-1"
+  azure_location     = "westeurope"
+  gcp_project        = "example-gcp-project"
+  gcp_region         = "europe-west3"
+  kubernetes_version = "1.30"
+  allowed_cidrs      = ["10.0.0.0/8"]
+}
+
+output "cluster_targets" {
+  value = module.mesh.cluster_targets
+}

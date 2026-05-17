@@ -1,0 +1,16 @@
+openapi: 3.0.3
+info:
+  title: Uncontrolled Admin API
+  version: 0.1.0
+paths:
+  /admin/*:
+    get:
+      x-public: true
+      responses:
+        "200":
+          description: Wildcard public admin response
+  /orders:
+    post:
+      responses:
+        "201":
+          description: Created

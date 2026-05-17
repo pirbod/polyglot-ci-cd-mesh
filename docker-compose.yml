@@ -1,0 +1,57 @@
+services:
+  dashboard-api:
+    build:
+      context: .
+      dockerfile: dashboard/backend/Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./evidence:/app/evidence
+    environment:
+      ENVIRONMENT: local
+
+  dashboard-web:
+    build:
+      context: dashboard/frontend
+    ports:
+      - "5173:5173"
+    environment:
+      VITE_API_URL: http://localhost:8080
+    depends_on:
+      - dashboard-api
+
+  api-policy-gate:
+    build:
+      context: .
+      dockerfile: security-gates/api-policy-gate/Dockerfile
+    ports:
+      - "8090:8090"
+
+  java-service:
+    build: apps/java-service
+    ports:
+      - "8081:8081"
+    environment:
+      ENVIRONMENT: local
+
+  dotnet-service:
+    build: apps/dotnet-service
+    ports:
+      - "8082:8082"
+    environment:
+      ENVIRONMENT: local
+
+  node-service:
+    build: apps/node-service
+    ports:
+      - "8083:8083"
+    environment:
+      ENVIRONMENT: local
+      PORT: 8083
+
+  python-service:
+    build: apps/python-service
+    ports:
+      - "8084:8084"
+    environment:
+      ENVIRONMENT: local

@@ -1,0 +1,50 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: polyglot-mesh-targets
+  namespace: argocd
+spec:
+  generators:
+    - matrix:
+        generators:
+          - list:
+              elements:
+                - cluster: aks
+                  server: https://aks.example.internal
+                - cluster: eks
+                  server: https://eks.example.internal
+                - cluster: gke
+                  server: https://gke.example.internal
+          - list:
+              elements:
+                - service: java
+                  values: values-java.yaml
+                - service: dotnet
+                  values: values-dotnet.yaml
+                - service: node
+                  values: values-node.yaml
+                - service: python
+                  values: values-python.yaml
+  template:
+    metadata:
+      name: "{{service}}-{{cluster}}"
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/pirbod/polyglot-ci-cd-mesh
+        targetRevision: main
+        path: charts/polyglot-service
+        helm:
+          valueFiles:
+            - values.yaml
+            - "{{values}}"
+            - values-prod.yaml
+      destination:
+        server: "{{server}}"
+        namespace: polyglot-prod
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true

@@ -1,0 +1,35 @@
+{
+  "status": "pass",
+  "results": [
+    {
+      "name": "generate demo evidence",
+      "status": "pass",
+      "command": "/usr/bin/python3 scripts/generate_demo_data.py"
+    },
+    {
+      "name": "python unittest suite",
+      "status": "pass",
+      "command": "/usr/bin/python3 -m unittest discover -s tests -p test_*.py"
+    },
+    {
+      "name": "node service tests",
+      "status": "pass",
+      "command": "npm test"
+    },
+    {
+      "name": "frontend smoke test",
+      "status": "pass",
+      "command": "npm test"
+    },
+    {
+      "name": "java service tests",
+      "status": "skip",
+      "command": "mvn test"
+    },
+    {
+      "name": "dotnet service tests",
+      "status": "skip",
+      "command": "dotnet test"
+    }
+  ]
+}
